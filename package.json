@@ -1,0 +1,25 @@
+{
+  "name": "consoul",
+  "version": "0.0.1",
+  "description": "Simple `console` based logging with log levels, timestamps, and more soon",
+  "main": "consoul.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kevireilly/consoul.git"
+  },
+  "keywords": [
+    "console",
+    "console.log",
+    "log",
+    "logger"
+  ],
+  "author": "Kevin Reilly <kevin@vishun.net>",
+  "homepage": "https://github.com/kevireilly/consoul",
+  "bugs": {
+    "url": "https://github.com/kevireilly/consoul/issues"
+  },
+  "licenses" : [{
+    "type": "Apache",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+  }]
+}
