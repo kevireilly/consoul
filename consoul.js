@@ -1,11 +1,14 @@
+'use strict';
+
 /**
  * Consoul constructor
- * @param {object=} options
+ * @param {Object=} options Configuration options
+ *   @param {Boolean=} options.timestamp Output a timestamp. Defaults to `true`.
+ *   @param {Boolean=} options.level The levels to log. Defaults to `all`.
  * @returns {Consoul}
  */
 function Consoul(options){
-  options = options || {};
-  // Turn timestamps on by default
+  if (typeof options !== 'object') options = {};
   if (options.timestamp !== false) options.timestamp = true;
   this.options = options;
   this.setLevel(this.options.level);
@@ -27,24 +30,22 @@ Consoul.levels = {
 
 /**
  * Active log level. Defaults to logging `all`.
- * @type {number}
+ * @type {Number}
  */
 Consoul.level = Consoul.levels.all;
 
-
 /**
  * Set the active log level.
- * @param level
+ * @param {!Number} level The log level to set. Can be set any time.
  */
 Consoul.prototype.setLevel = function(level) {
-  if (Consoul.levels[level] >= 0) {
-    Consoul.level = Consoul.levels[level];
-  }
+  if (Consoul.levels[level] >= 0) Consoul.level = Consoul.levels[level];
   setup(this.options);
 };
 
 /**
  * Setup `console` methods
+ * @param {!Object} options Configuration options
  */
 function setup(options){
   // Setup base console methods
@@ -56,8 +57,9 @@ function setup(options){
   ['log', 'info', 'warn', 'error'].forEach(function(method){
     if (Consoul.levels[method] <= Consoul.level){
       Consoul.prototype[method] = function(){
-        if (options.timestamp) arguments = addTimestamp(arguments);
-        console[method].apply(console, arguments);
+        var args = arguments;
+        if (options.timestamp) args = addTimestamp(args);
+        console[method].apply(console, args);
       };
     } else {
       Consoul.prototype[method] = function(){
@@ -69,8 +71,8 @@ function setup(options){
 
 /**
  * Add a timestamp to the beginning of the output
- * @param args
- * @returns {*}
+ * @param {!Array} args Arguments provided to `console`
+ * @returns {Array} Mutated `arguments` with timestamp
  */
 function addTimestamp(args){
   var newArgs, timestamp = generateTimestamp();
@@ -79,19 +81,30 @@ function addTimestamp(args){
     newArgs = args;
   } else {
     newArgs = [timestamp];
-    for (var i in args) {
+    for (var i = 0; i < args.length; i++) {
       newArgs.push(args[i]);
     }
   }
   return newArgs;
 }
 
+/**
+ * Generate a simple timestamp
+ * TODO: Allow this to be configurable via `options`
+ * @returns {string} Generated timestamp string
+ */
 function generateTimestamp(){
   var d = new Date();
   return (d.getMonth() + 1) + '-' + d.getDate() + '-' + d.getFullYear() + ' | ' +
           d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' |';
 }
 
+/**
+ * Node.JS specific exporting
+ * TODO: Handle browsers gracefully
+ * @param {Object=} options Configuration options
+ * @returns {Consoul} Consoul constructor
+ */
 module.exports = function(options){
   return new Consoul(options);
 };
