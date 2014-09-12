@@ -1,6 +1,6 @@
 'use strict';
 
-var console = require('../consoul')();
+var console = require('../consoule')();
 
 console.log('log');
 console.info('info');

@@ -1,6 +1,6 @@
 'use strict';
 
-var console = require('../consoul')({ level: 'none' });
+var console = require('../consoule')({ level: 'none' });
 
 console.log('log');
 console.info('info');

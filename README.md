@@ -1,18 +1,18 @@
-Consoul
-=======
+Consoule
+========
 
 Simple `console` based logging with log levels, timestamps, and more soon.
 
 ## Install
-Consoul is readily available on npm.
+Consoule is readily available on npm.
  
-    npm install consoul
+    npm install consoule
      
 ## Usage
-By default, Consoul adds a date | time and logs everything like usual
+By default, Consoule adds a date | time and logs everything like usual
 including objects, arrays, booleans, and a mix of arguments:
  
-    var console = require('consoul')();
+    var console = require('consoule')();
     console.log('log');
     console.info('info');
     console.warn('warn');
@@ -29,7 +29,7 @@ Which produces output like the following:
     
 You can set change the log `level` or `timestamp` output at any point:
 
-    var console = require('consoul')();
+    var console = require('consoule')();
     console.setLevel('none');
     console.options.timestamp = false;
 
@@ -41,7 +41,7 @@ Default: `all`
 
 To suppress all log output, specify the log `level` of `none`:
 
-    var console = require('consoul')({ level: 'none' });
+    var console = require('consoule')({ level: 'none' });
     
 Each log `level` will log itself and everything below it according to the following list.
 For instance, `warn` will only log `warn` and `error`. 
@@ -61,7 +61,7 @@ Simple date and time output prepended to the logged item.
 
 To refrain from outputting a `timestamp`, specify `false` for this option.
 
-    var console = require('consoul')({ timestamp: false });
+    var console = require('consoule')({ timestamp: false });
 
 ### Todo
 * Allow custom log output (log to disk, database, or anything you can do with a callback)
