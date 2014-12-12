@@ -10,7 +10,7 @@ Consoule is [soon to be] readily available on npm.
     npm install consoule --save
      
 ## Inclusion
-### Node.js
+#### Node.js
 The rest of the documentation refers to an instance of `consoule` being called,
 but you don't *have* to assign it to a variable.
 
@@ -20,7 +20,7 @@ Or simply
 
     require('consoule')(); // replaces `consoule()` calls in the docs
     
-### Browser
+#### Browser
 Will make an instance of `consoule` available to be called. 
 
     <script type="text/javascript" src="js/consoule.js"></script>
@@ -51,7 +51,7 @@ To output only `warn` and `error` output without timestamps:
       timestamp: false
     });
     
-You can change the log `level` or `timestamp` output at any point:
+You can change the log `level` and `timestamp` output at any point:
 
     consoule();
     console.log('Will be output with a timestamp');
@@ -64,8 +64,7 @@ You can change the log `level` or `timestamp` output at any point:
 
 ## Options
 
-### level
-Option: `options.level`  
+#### level
 Default: `all`
 
 To suppress all log output, specify the log `level` of `none`:
@@ -74,7 +73,9 @@ To suppress all log output, specify the log `level` of `none`:
       level: 'none'
     });
     
-Each log `level` will log itself and everything below it according to the following list.
+**Note:** removal of logging as a build process is likely still a good idea
+    
+Each log `level` will output itself and everything below it according to the following list.
 For instance, `warn` will only log `warn` and `error`. 
 
     all
@@ -84,8 +85,7 @@ For instance, `warn` will only log `warn` and `error`.
     error
     none
     
-### timestamp
-Option: `options.timestamp`  
+#### timestamp
 Default: `true`
 
 Simple date and time output prepended to the logged item.
@@ -96,7 +96,7 @@ To refrain from outputting a `timestamp`, specify `false` for this option.
       timestamp: false
     });
 
-### Todo
+#### Todo
 * Allow custom log output (log to disk, database, or anything you can do with a callback)
 * Customizable timestamp format
 * Namespaces / log source
