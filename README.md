@@ -1,18 +1,35 @@
 Consoule
 ========
 
-Simple `console` based logging with log levels, timestamps, and more soon.
+Simple `console` based logging for Node.js and the browser with log levels,
+timestamps, and more soon. Automatically replaces `console` with modified behavior.
 
 ## Install
-Consoule is readily available on npm.
+Consoule is [soon to be] readily available on npm.
  
-    npm install consoule
+    npm install consoule --save
      
+## Inclusion
+### Node.js
+The rest of the documentation refers to an instance of `consoule` being called,
+but you don't *have* to assign it to a variable.
+
+    var consoule = require('consoule');
+    
+Or simply
+
+    require('consoule')(); // replaces `consoule()` calls in the docs
+    
+### Browser
+Will make an instance of `consoule` available to be called. 
+
+    <script type="text/javascript" src="js/consoule.js"></script>
+
 ## Usage
 By default, Consoule adds a date | time and logs everything like usual
 including objects, arrays, booleans, and a mix of arguments:
  
-    var console = require('consoule')();
+    consoule();
     console.log('log');
     console.info('info');
     console.warn('warn');
@@ -27,21 +44,35 @@ Which produces output like the following:
     8-8-2014 | 19:14:33 | error
     8-8-2014 | 19:14:33 | { foo: 'bar' } [ 'foo', 'bar' ] true
     
-You can set change the log `level` or `timestamp` output at any point:
+To output only `warn` and `error` output without timestamps:
 
-    var console = require('consoule')();
-    console.setLevel('none');
+    consoule({
+      level: 'warn',
+      timestamp: false
+    });
+    
+You can change the log `level` or `timestamp` output at any point:
+
+    consoule();
+    console.log('Will be output with a timestamp');
+    
+    console.setLevel('error');
     console.options.timestamp = false;
+    
+    console.log('Will not be output at all');
+    console.error('Will be output without a timestamp');
 
 ## Options
 
-### Log Level
+### level
 Option: `options.level`  
 Default: `all`
 
 To suppress all log output, specify the log `level` of `none`:
 
-    var console = require('consoule')({ level: 'none' });
+    consoule({
+      level: 'none'
+    });
     
 Each log `level` will log itself and everything below it according to the following list.
 For instance, `warn` will only log `warn` and `error`. 
@@ -53,7 +84,7 @@ For instance, `warn` will only log `warn` and `error`.
     error
     none
     
-### Timestamp
+### timestamp
 Option: `options.timestamp`  
 Default: `true`
 
@@ -61,13 +92,13 @@ Simple date and time output prepended to the logged item.
 
 To refrain from outputting a `timestamp`, specify `false` for this option.
 
-    var console = require('consoule')({ timestamp: false });
+    consoule({
+      timestamp: false
+    });
 
 ### Todo
 * Allow custom log output (log to disk, database, or anything you can do with a callback)
 * Customizable timestamp format
-* Global `console` replacement
 * Namespaces / log source
 * Performance comparisons
-* Various improvements
 * Unit tests

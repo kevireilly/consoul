@@ -1,6 +1,6 @@
-'use strict';
-
-var console = require('../consoule')();
+// Output all `console` methods
+// with a prepended timestamp
+require('../consoule')();
 
 console.log('log');
 console.info('info');
