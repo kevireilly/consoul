@@ -1,6 +1,6 @@
 // Output all `console` methods
 // with a prepended timestamp
-require('../consoule')();
+require('../consoule')({ namespace: 'Basic Example' });
 
 console.log('log');
 console.info('info');

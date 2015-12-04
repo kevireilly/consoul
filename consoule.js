@@ -5,6 +5,7 @@ var Consoule = (function(){
    * Consoule constructor
    *
    * @param {Object=} options Configuration options
+   *   @param {String=} options.namespace The namespace to log under
    *   @param {Boolean=} options.timestamp Output a timestamp. Defaults to `true`.
    *   @param {Boolean=} options.level The levels to log. Defaults to `all`.
    *   @param {Object=} options.context The `console` instance
@@ -13,6 +14,7 @@ var Consoule = (function(){
   function Consoule(options){
     this.options = typeof options === 'object' ? options : {};
     this.options.timestamp = this.options.timestamp !== false;
+    console.namespace = this.namespace.bind(this);
     console.getLevel = this.getLevel.bind(this);
     console.setLevel = this.setLevel.bind(this);
     this.setLevel(); // Set level and initialize
@@ -34,6 +36,14 @@ var Consoule = (function(){
   };
 
   /**
+   * Use an optional namespace
+   * @param {String=} namespace The namespace to log under
+   */
+  Consoule.prototype.namespace = function(namespace){
+    this.options.namespace = namespace;
+  };
+
+  /**
    * Get the active log level
    *
    * @returns {Number} Active log level
@@ -48,11 +58,10 @@ var Consoule = (function(){
    * @param {!Number} level The log level to set. Can be set any time. Defaults to `all`.
    */
   Consoule.prototype.setLevel = function(level) {
-    this.level = typeof Consoule.levels[level] === 'number'
-                      ? Consoule.levels[level]
-                     : typeof Consoule.levels[this.options.level] === 'number'
-                      ? Consoule.levels[this.options.level]
-                     : Consoule.levels.all;
+    this.level = typeof Consoule.levels[level] === 'number' ? Consoule.levels[level]
+                 : typeof Consoule.levels[this.options.level] === 'number' ? Consoule.levels[this.options.level]
+                 : Consoule.levels.all;
+
     // Setup methods with new log level
     this.init();
   };
@@ -65,8 +74,11 @@ var Consoule = (function(){
       if (Consoule.levels[method] <= this.level){
         var cache = console[method];
         console[method] = function(){
-          var args = Array.prototype.slice.call(arguments);
-          if (this.options.timestamp) args.unshift(this.timestamp());
+          var cells = ['|'];
+          if (this.options.timestamp) cells.push(this.timestamp());
+          if (this.options.namespace) cells.push(this.options.namespace + ' |');
+
+          var args = cells.concat(Array.prototype.slice.call(arguments))
           cache.apply(console, args);
         }.bind(this);
       } else {
@@ -84,7 +96,7 @@ var Consoule = (function(){
   Consoule.prototype.timestamp = function(){
     var d = new Date();
     return (d.getMonth() + 1) + '-' + d.getDate() + '-' + d.getFullYear() + ' | ' +
-      d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' |';
+            d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' |';
   };
 
   /**
