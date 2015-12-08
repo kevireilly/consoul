@@ -71,9 +71,10 @@ var Consoule = (function(){
    */
   Consoule.prototype.init = function(){
     ['log', 'info', 'warn', 'error'].forEach(function(method){
+      var context = this.options.global ? console : this;
       if (Consoule.levels[method] <= this.level){
         var cache = console[method];
-        console[method] = function(){
+        context[method] = function(){
           var cells = ['|'];
           if (this.options.timestamp) cells.push(this.timestamp());
           if (this.options.namespace) cells.push(this.options.namespace + ' |');
@@ -82,7 +83,7 @@ var Consoule = (function(){
           cache.apply(console, args);
         }.bind(this);
       } else {
-        console[method] = this.noop;
+        handler = this.noop;
       }
     }.bind(this));
   };
